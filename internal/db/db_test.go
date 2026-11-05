@@ -46,6 +46,7 @@ var dbInstance db.DbIf
 
 func TestDb(t *testing.T) {
 	t.Run("Bbolt DB", testBboltDb)
+	t.Run("Custom DB", testCustomDb)
 }
 
 func testBboltDb(t *testing.T) {
@@ -65,6 +66,10 @@ func testBboltDb(t *testing.T) {
 }
 
 func testCustomDb(t *testing.T) {
+	if os.Getenv("NSF_TEST_CUSTOM_DB") == "" {
+		t.Skip("set NSF_TEST_CUSTOM_DB=1 to test the custom DB (needs your local DB running)")
+	}
+
 	var err error
 	dbInstance, err = db.NewDb("custom") // TODO: change "custom" to the actual name of your custom DB implementation
 	if err != nil {
