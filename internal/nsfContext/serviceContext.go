@@ -86,16 +86,12 @@ func (s *serviceContext) deregisterServices(nfName string, services []string) er
 	defer s.mu.Unlock()
 
 	for _, service := range services {
-		record, found, err := s.loadRecord(service)
+		exist, err := s.DbIf.Exist(service)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to check service %s: %w", service, err)
 		}
-		if !found {
+		if !exist {
 			s.NsfLogger.SvcLog.Infof("Service %s is not registered, skip", service)
-			continue
-		}
-		if record.NfName != nfName {
-			s.NsfLogger.SvcLog.Infof("Service %s belongs to %s, not %s, skip", service, record.NfName, nfName)
 			continue
 		}
 
