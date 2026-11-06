@@ -71,7 +71,7 @@ func testCustomDb(t *testing.T) {
 	}
 
 	var err error
-	dbInstance, err = db.NewDb("custom") // TODO: change "custom" to the actual name of your custom DB implementation
+	dbInstance, err = db.NewDb("mongodb")
 	if err != nil {
 		t.Fatalf("Failed to create DB instance: %v", err)
 	}
